@@ -43,6 +43,8 @@ def robot_speak(face_num, is_speaking):
             player.play()
         elif current_data.face_num > 1 and not current_data.is_speaking:
             print("Hey guys! Please move. I'm late for work.")
+            global finish
+            finish = False
             player = vlc.MediaPlayer(multi_dialogue[dialogue_idx])
             events = player.event_manager()
             events.event_attach(vlc.EventType.MediaPlayerEndReached, speak_finished, 1)
@@ -89,7 +91,6 @@ while True:
         prev_rects = rects
         is_speaking = False
         print("THREADS: %d", threading.active_count())
-        # if threading.active_count() == 2:
         if finish:
             t = threading.Thread(target=robot_speak(len(rects), is_speaking))
             t.daemon = True
